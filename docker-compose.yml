@@ -11,9 +11,6 @@ services:
       - ACKEE_USERNAME=${ACKEE_USERNAME}
       - ACKEE_PASSWORD=${ACKEE_PASSWORD}
 
-    env_file:
-      - .env
-
     depends_on:
       - mongo
 
