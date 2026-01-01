@@ -11,6 +11,14 @@ services:
       - .env
     depends_on:
       - mongo
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ackee.rule=Host(`statics.nawastudio.net`)"
+      - "traefik.http.routers.ackee.entrypoints=websecure"
+      - "traefik.http.routers.ackee.tls.certresolver=letsencrypt"
+      - "traefik.http.services.ackee.loadbalancer.server.port=3000"
+
   mongo:
     image: mongo
     container_name: mongo
