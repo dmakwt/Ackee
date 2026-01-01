@@ -2,14 +2,21 @@ services:
   ackee:
     image: electerious/ackee
     restart: always
+
     environment:
       WAIT_HOSTS: mongo:27017
       ACKEE_MONGODB: mongodb://mongo:27017/ackee
       ACKEE_HOST: 0.0.0.0
       ACKEE_USERNAME: ${ACKEE_USERNAME}
       ACKEE_PASSWORD: ${ACKEE_PASSWORD}
+
     depends_on:
       - mongo
+
+    labels:
+      - "coolify.managed=true"
+      - "coolify.proxy=true"
+      - "coolify.port=3000"
 
   mongo:
     image: mongo
