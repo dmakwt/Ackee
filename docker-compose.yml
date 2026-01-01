@@ -14,9 +14,8 @@ services:
       - mongo
 
     labels:
-      - "coolify.managed=true"
-      - "coolify.proxy=true"
-      - "coolify.port=3000"
+      caddy: statics.nawastudio.net
+      caddy.reverse_proxy: "{{upstreams 3000}}"
 
   mongo:
     image: mongo
