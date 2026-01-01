@@ -15,7 +15,8 @@ services:
 
     labels:
       caddy: statics.nawastudio.net
-      caddy.reverse_proxy: "{{upstreams 3000}}"
+      caddy_0.handle_path: "/*"
+      caddy_0.reverse_proxy: "{{upstreams 3000}}"
 
   mongo:
     image: mongo
