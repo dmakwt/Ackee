@@ -1,29 +1,36 @@
 services:
+  caddy:
+    image: caddy:2
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - ackee
+
   ackee:
     image: electerious/ackee
-    container_name: ackee
     restart: always
-
     environment:
-      - WAIT_HOSTS=mongo:27017
-      - ACKEE_MONGODB=mongodb://mongo:27017/ackee
-      - ACKEE_HOST=0.0.0.0
-      - ACKEE_USERNAME=${ACKEE_USERNAME}
-      - ACKEE_PASSWORD=${ACKEE_PASSWORD}
-
+      WAIT_HOSTS: mongo:27017
+      ACKEE_MONGODB: mongodb://mongo:27017/ackee
+      ACKEE_HOST: 0.0.0.0
+      ACKEE_USERNAME: ${ACKEE_USERNAME}
+      ACKEE_PASSWORD: ${ACKEE_PASSWORD}
     depends_on:
       - mongo
 
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.ackee.rule=Host(`statics.nawastudio.net`)"
-      - "traefik.http.routers.ackee.entrypoints=websecure"
-      - "traefik.http.routers.ackee.tls.certresolver=letsencrypt"
-      - "traefik.http.services.ackee.loadbalancer.server.port=3000"
-
   mongo:
     image: mongo
-    container_name: mongo
     restart: always
     volumes:
-      - ./data:/data/db
+      - ackee_data:/data/db
+
+volumes:
+  ackee_data:
+  caddy_data:
+  caddy_config:
